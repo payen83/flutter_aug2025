@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aug2025/app/model/task.model.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -9,6 +10,18 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   final TextEditingController _controller = TextEditingController();
+
+  final taskList = <Task>[
+    Task('Do laundry'),
+    Task('Cook dinner'),
+    Task('Wash Car'),
+  ];
+
+  onTaskCreated(Task task){
+    setState(() {
+      taskList.add(task);
+    });
+  }
 
   void showNewTaskModal(){
     showModalBottomSheet(
@@ -38,11 +51,16 @@ class _TodoScreenState extends State<TodoScreen> {
               SizedBox(height: 15,),
               ElevatedButton(
                 onPressed: (){
-
+                  if(_controller.text.isNotEmpty){
+                    final task = Task(_controller.text);
+                    onTaskCreated(task);
+                    _controller.text = '';
+                    Navigator.of(context).pop();
+                  }
                 }, 
                 child: Text('Submit')
               )   
-            ],
+            ], 
           ),
         );
       }
@@ -79,19 +97,12 @@ class _TodoScreenState extends State<TodoScreen> {
                     child: H1(h1Text: 'Task List',)
                   ),
                 ),
-                Card(
-                  margin: EdgeInsets.symmetric(horizontal: 30),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_box_outline_blank),
-                        SizedBox(width: 10,),
-                        Text('Task description')
-                      ],
-                    ),
-                  )
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: taskList.length,
+                    itemBuilder: (_, index) => _TaskItem(taskList[index]),
+                    separatorBuilder: (_,__) => SizedBox(height: 16,),
+                  ),
                 ),
               ],
             )
@@ -99,6 +110,45 @@ class _TodoScreenState extends State<TodoScreen> {
         ],
       ),
     ); 
+  }
+}
+
+class _TaskItem extends StatefulWidget {
+  const _TaskItem(this.task);
+
+  final Task task;
+
+  @override
+  State<_TaskItem> createState() => _TaskItemState();
+}
+
+class _TaskItemState extends State<_TaskItem> {
+
+  void onTaskDoneChange(Task task){
+    setState(() {
+      task.done = !task.done;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTaskDoneChange(widget.task),
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 30),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
+          child: Row(
+            children: [
+              Icon(widget.task.done ? Icons.check_box : Icons.check_box_outline_blank),
+              SizedBox(width: 10,),
+              Text(widget.task.title)
+            ],
+          ),
+        )
+      ),
+    );
   }
 }
 
