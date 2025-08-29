@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_aug2025/app/model/task.model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -9,17 +12,49 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+
+  // please run at terminal => flutter pub add shared_preferences
+  /// restart debugging to test shared preferences
+  
   final TextEditingController _controller = TextEditingController();
 
-  final taskList = <Task>[
-    Task('Do laundry'),
-    Task('Cook dinner'),
-    Task('Wash Car'),
-  ];
+  final taskList = <Task>[];
+
+  List<String> tasksToJson(List<Task> tasks) => 
+    tasks.map((task) => json.encode(task.toJson())).toList();
+
+  List<Task> tasksfromJson(List<String> jsonList) => 
+    jsonList.map((taskJson)=> Task.fromJson(json.decode(taskJson))).toList();
+  
+  List<Task> tasksJsonToList(List<String> tasksJson) => tasksJson
+      .map((taskJson) => Task.fromJson(json.decode(taskJson))).toList();
+
+  Future<void> _saveTask() async {
+    final pref = await SharedPreferences.getInstance();
+    final tasksJson = tasksToJson(taskList);
+    await pref.setStringList('tasks', tasksJson);
+  }
+
+  Future<void> _loadTask() async {
+    final pref = await SharedPreferences.getInstance();
+    final tasksJson = pref.getStringList('tasks') ?? [];
+    setState(() {
+      taskList.clear();
+      taskList.addAll(tasksJsonToList(tasksJson));
+    });
+
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _loadTask();
+  }
 
   onTaskCreated(Task task){
     setState(() {
       taskList.add(task);
+      _saveTask();
     });
   }
 
@@ -100,7 +135,7 @@ class _TodoScreenState extends State<TodoScreen> {
                 Expanded(
                   child: ListView.separated(
                     itemCount: taskList.length,
-                    itemBuilder: (_, index) => _TaskItem(taskList[index]),
+                    itemBuilder: (_, index) => _TaskItem(taskList[index], onSaveTask: _saveTask,),
                     separatorBuilder: (_,__) => SizedBox(height: 16,),
                   ),
                 ),
@@ -114,8 +149,8 @@ class _TodoScreenState extends State<TodoScreen> {
 }
 
 class _TaskItem extends StatefulWidget {
-  const _TaskItem(this.task);
-
+  const _TaskItem(this.task, {required this.onSaveTask});
+  final VoidCallback onSaveTask;
   final Task task;
 
   @override
@@ -127,6 +162,7 @@ class _TaskItemState extends State<_TaskItem> {
   void onTaskDoneChange(Task task){
     setState(() {
       task.done = !task.done;
+      widget.onSaveTask();
     });
   }
 
