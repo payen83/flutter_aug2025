@@ -8,6 +8,47 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+  final TextEditingController _controller = TextEditingController();
+
+  void showNewTaskModal(){
+    showModalBottomSheet(
+      context: context, 
+      builder: (_) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 23, vertical: 23),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: Colors.white
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              H1(h1Text: 'New Task',),
+              SizedBox(height: 26,),
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18)
+                  )
+                ),
+              ),
+              SizedBox(height: 15,),
+              ElevatedButton(
+                onPressed: (){
+
+                }, 
+                child: Text('Submit')
+              )   
+            ],
+          ),
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +58,7 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+          showNewTaskModal();
         },
         shape: CircleBorder(),
         backgroundColor: Colors.orange,
@@ -35,14 +76,7 @@ class _TodoScreenState extends State<TodoScreen> {
                   padding: EdgeInsets.all(30),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      'Task List',
-                      style: TextStyle(
-                        fontSize: 18, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.blueGrey
-                      ),
-                    ),
+                    child: H1(h1Text: 'Task List',)
                   ),
                 ),
                 Card(
@@ -65,6 +99,26 @@ class _TodoScreenState extends State<TodoScreen> {
         ],
       ),
     ); 
+  }
+}
+
+class H1 extends StatelessWidget {
+  const H1({
+    super.key, required this.h1Text
+  });
+
+  final String h1Text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      h1Text,
+      style: TextStyle(
+        fontSize: 18, 
+        fontWeight: FontWeight.bold, 
+        color: Colors.blueGrey
+      ),
+    );
   }
 }
 
