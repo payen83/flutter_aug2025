@@ -59,7 +59,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
                     width: MediaQuery.of(context).size.width,
                     child: Text(product['title'], style: TextStyle(fontSize: 20)),
                   )

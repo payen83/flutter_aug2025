@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
@@ -51,28 +51,31 @@ class _CameraPageState extends State<CameraPage> {
                 foregroundColor: Colors.white,
                 textStyle: const TextStyle(fontSize: 20),
               ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('Take Picture'),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('Take Picture'),
+                  ],
+                ),
               ),
               onPressed: () async {
-                // final ImagePicker picker = ImagePicker();
-                // final XFile? camera = await picker.pickImage(source: ImageSource.camera);
-                // if (camera != null) {
-                //   setState(() {
-                //     imageFile = File(camera.path);
-                //   });
-                // }
+                final ImagePicker picker = ImagePicker();
+                final XFile? camera = await picker.pickImage(source: ImageSource.camera);
+                if (camera != null) {
+                  setState(() {
+                    imageFile = File(camera.path);
+                  });
+                }
               },
             ),
           ),

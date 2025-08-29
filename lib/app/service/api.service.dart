@@ -15,9 +15,7 @@ class ApiService {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
-
-    log(url.toString());
-
+    
     var response = await http.get(url, headers: headers);
     if(response.statusCode == 200){
     var jsonResponse = json.decode(response.body);

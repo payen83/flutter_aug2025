@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_aug2025/app/model/task.model.dart';
+import 'package:flutter_aug2025/app/view/camera.screen.dart';
 import 'package:flutter_aug2025/app/view/product.screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,6 +116,13 @@ class _TodoScreenState extends State<TodoScreen> {
                 MaterialPageRoute(builder: (context) => ProductScreen())
               );
             }, child: Text('Products')
+          ),
+          IconButton(onPressed: (){
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => CameraPage())
+              );
+            
+            }, icon: Icon(Icons.camera_alt)
           )
         ],
       ),
