@@ -16,9 +16,11 @@ class ApiService {
       'Accept': 'application/json'
     };
 
-    var response = await http.post(url, headers: headers);
+    log(url.toString());
+
+    var response = await http.get(url, headers: headers);
     if(response.statusCode == 200){
-      var jsonResponse = json.encode(response);
+    var jsonResponse = json.decode(response.body);
       return jsonResponse;
     } else {
       log("Error in getting API");

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_aug2025/app/model/task.model.dart';
+import 'package:flutter_aug2025/app/view/product.screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -108,6 +109,14 @@ class _TodoScreenState extends State<TodoScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Todo List'),
+        actions: [
+          TextButton(onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ProductScreen())
+              );
+            }, child: Text('Products')
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
