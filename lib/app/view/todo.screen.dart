@@ -16,7 +16,7 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
 
   // please run at terminal => flutter pub add shared_preferences
-  /// restart debugging to test shared preferences
+  // restart debugging to test shared preferences
   
   final TextEditingController _controller = TextEditingController();
 
