@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aug2025/app/view/home.screen.dart';
 import 'package:flutter_aug2025/app/view/todo.screen.dart';
 
 class MyApp extends StatelessWidget {
